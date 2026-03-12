@@ -4,6 +4,18 @@ A Retrieval-Augmented Generation (RAG) powered question-answering chatbot that a
 
 ---
 
+## Documentation
+
+| Document | Description |
+|----------|-------------|
+| [Architecture](docs/architecture.md) | System design, data flow diagram, and component breakdown |
+| [Setup & Installation](docs/setup.md) | Full installation and credential configuration guide |
+| [Usage Guide](docs/usage.md) | How to use the chatbot UI, tips, and limitations |
+| [API Reference](docs/api-reference.md) | All functions, parameters, and return types documented |
+| [Configuration Reference](docs/configuration.md) | Every tunable parameter and its options |
+
+---
+
 ## Features
 
 - Upload any PDF document and query its contents interactively
@@ -33,6 +45,8 @@ User Query  ──────────────────────�
                                                        Answer Output
 ```
 
+> See [docs/architecture.md](docs/architecture.md) for the full detailed architecture with component descriptions.
+
 ---
 
 ## Tech Stack
@@ -57,7 +71,7 @@ User Query  ──────────────────────�
 
 ---
 
-## Installation
+## Quick Start
 
 1. **Clone the repository**
 
@@ -66,7 +80,7 @@ User Query  ──────────────────────�
    cd RAG-QA-Chatbot
    ```
 
-2. **Create a virtual environment**
+2. **Create and activate a virtual environment**
 
    ```bash
    python -m venv my_env
@@ -79,54 +93,54 @@ User Query  ──────────────────────�
 3. **Install dependencies**
 
    ```bash
-   pip install ibm-watsonx-ai langchain langchain-ibm langchain-community chromadb pypdf gradio
+   pip install ibm-watsonx-ai langchain langchain-ibm langchain-community langchain-text-splitters chromadb pypdf gradio
    ```
 
----
+4. **Set your WatsonX API key**
 
-## Configuration
+   ```bash
+   # Windows
+   set WATSONX_APIKEY=your-api-key-here
+   # macOS/Linux
+   export WATSONX_APIKEY=your-api-key-here
+   ```
 
-In `qabot.py`, update the following with your IBM WatsonX AI credentials:
-
-```python
-# Replace with your actual WatsonX project ID and region URL
-project_id = "your-project-id"
-url = "https://us-south.ml.cloud.ibm.com"
-```
-
-If your WatsonX instance requires an API key, set it via environment variable or pass it to the `Credentials` object:
-
-```bash
-export WATSONX_APIKEY="your-api-key"
-```
-
----
-
-## Usage
-
-1. **Run the application**
+5. **Run the app**
 
    ```bash
    python qabot.py
    ```
 
-2. **Open the Gradio UI** in your browser at `http://127.0.0.1:7860`
+   Open `http://127.0.0.1:7860` in your browser.
 
-3. **Upload a PDF** using the file upload input
+> For detailed setup instructions, see [docs/setup.md](docs/setup.md).
 
-4. **Type your question** in the query box and submit
+---
 
-5. The chatbot will retrieve relevant context from the PDF and generate an answer
+## Usage
+
+1. **Upload a PDF** using the file upload area
+2. **Type your question** in the query box
+3. **Click Submit** and wait for the answer
+4. The chatbot retrieves relevant context from the PDF and generates a grounded answer
+
+> For tips, examples, and limitations, see [docs/usage.md](docs/usage.md).
 
 ---
 
 ## Project Structure
 
 ```
-QA Bot RAG/
-├── qabot.py        # Main application — RAG pipeline and Gradio UI
-├── README.md       # Project documentation
-└── my_env/         # Python virtual environment (not committed)
+RAG-QA-Chatbot/
+├── qabot.py                    # Main application — RAG pipeline and Gradio UI
+├── README.md                   # Project overview (this file)
+├── .gitignore                  # Git ignore rules
+└── docs/
+    ├── architecture.md         # System architecture and data flow
+    ├── setup.md                # Installation and configuration guide
+    ├── usage.md                # Usage guide and tips
+    ├── api-reference.md        # Function and interface documentation
+    └── configuration.md        # All configurable parameters
 ```
 
 ---
@@ -134,11 +148,13 @@ QA Bot RAG/
 ## How It Works
 
 1. **Document Loading** — The uploaded PDF is parsed using `PyPDFLoader`.
-2. **Text Splitting** — The document is split into overlapping chunks (1000 chars, 50 overlap) using `RecursiveCharacterTextSplitter`.
+2. **Text Splitting** — The document is split into overlapping chunks (1000 chars, 50 char overlap) using `RecursiveCharacterTextSplitter`.
 3. **Embedding & Indexing** — Each chunk is embedded using IBM WatsonX Embeddings and stored in a ChromaDB vector store.
 4. **Retrieval** — On user query, the most semantically similar chunks are retrieved from the vector store.
 5. **Generation** — The retrieved context and query are passed to the WatsonX LLM (`mistral-medium-2505`) to generate a grounded answer.
 6. **Display** — The answer is shown in the Gradio interface.
+
+> For a deep dive into each component, see [docs/architecture.md](docs/architecture.md).
 
 ---
 
