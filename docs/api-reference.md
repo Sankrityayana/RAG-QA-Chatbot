@@ -18,15 +18,16 @@ Initializes and returns a WatsonX LLM instance backed by Mistral Medium.
 
 **Configuration:**
 
-| Parameter         | Value                               | Description                                  |
-|-------------------|-------------------------------------|----------------------------------------------|
-| `model_id`        | `mistralai/mistral-medium-2505`     | WatsonX model identifier                     |
-| `url`             | `https://us-south.ml.cloud.ibm.com` | WatsonX regional endpoint                    |
-| `project_id`      | `"skills-network"`                  | WatsonX project ID                           |
-| `MAX_NEW_TOKENS`  | `256`                               | Maximum number of tokens in the LLM response |
-| `TEMPERATURE`     | `0.5`                               | Generation temperature (0=deterministic, 1=creative) |
+| Parameter        | Value                                | Description                                          |
+|------------------|--------------------------------------|------------------------------------------------------|
+| `model_id`       | `mistralai/mistral-medium-2505`      | WatsonX model identifier                             |
+| `url`            | `https://us-south.ml.cloud.ibm.com`  | WatsonX regional endpoint                            |
+| `project_id`     | `"skills-network"`                   | WatsonX project ID                                   |
+| `MAX_NEW_TOKENS` | `256`                                | Maximum number of tokens in the LLM response         |
+| `TEMPERATURE`    | `0.5`                                | Generation temperature (0=deterministic, 1=creative) |
 
 **Example:**
+
 ```python
 llm = get_llm()
 response = llm.invoke("What is RAG?")
@@ -40,17 +41,19 @@ Loads a PDF file and returns its content as a list of LangChain `Document` objec
 
 **Parameters:**
 
-| Name  | Type         | Description                              |
-|-------|--------------|------------------------------------------|
-| `file` | `gr.File` (or any object with `.name`) | Uploaded file object from Gradio |
+| Name   | Type                                     | Description                      |
+|--------|------------------------------------------|----------------------------------|
+| `file` | `gr.File` (or any object with `.name`)   | Uploaded file object from Gradio |
 
 **Returns:** `List[Document]` — one `Document` per page of the PDF
 
 **Notes:**
+
 - Uses `PyPDFLoader` from `langchain_community`.
 - Each `Document` includes `page_content` (text) and `metadata` (page number, source path).
 
 **Example:**
+
 ```python
 docs = document_loader(file)
 print(docs[0].page_content)   # Text of page 1
@@ -65,21 +68,22 @@ Splits a list of documents into smaller, overlapping text chunks.
 
 **Parameters:**
 
-| Name   | Type             | Description                                  |
-|--------|------------------|----------------------------------------------|
-| `data` | `List[Document]` | Documents returned by `document_loader`       |
+| Name   | Type               | Description                              |
+|--------|--------------------|------------------------------------------|
+| `data` | `List[Document]`   | Documents returned by `document_loader`  |
 
 **Returns:** `List[Document]` — smaller chunk documents
 
 **Configuration:**
 
-| Parameter        | Value  | Description                                         |
-|------------------|--------|-----------------------------------------------------|
-| `chunk_size`     | `1000` | Maximum characters per chunk                        |
-| `chunk_overlap`  | `50`   | Character overlap between consecutive chunks         |
-| `length_function`| `len`  | Function used to measure chunk length                |
+| Parameter         | Value  | Description                                  |
+|-------------------|--------|----------------------------------------------|
+| `chunk_size`      | `1000` | Maximum characters per chunk                 |
+| `chunk_overlap`   | `50`   | Character overlap between consecutive chunks |
+| `length_function` | `len`  | Function used to measure chunk length        |
 
 **Notes:**
+
 - `RecursiveCharacterTextSplitter` splits on `["\n\n", "\n", " ", ""]` in order, preserving sentence boundaries as much as possible.
 - Overlap ensures that context at chunk boundaries is not lost during retrieval.
 
@@ -104,6 +108,7 @@ Initializes and returns a WatsonX Embeddings model instance.
 | `RETURN_OPTIONS`        | `{"input_text": True}`              | Returns original text with embedding response  |
 
 **Notes:**
+
 - IBM Slate 125M is a bi-encoder model optimized for retrieval tasks.
 - Produces 768-dimensional vectors.
 
@@ -115,13 +120,14 @@ Creates an in-memory ChromaDB vector store from document chunks and their embedd
 
 **Parameters:**
 
-| Name     | Type             | Description                                      |
-|----------|------------------|--------------------------------------------------|
-| `chunks` | `List[Document]` | Text chunks from `text_splitter`                  |
+| Name     | Type             | Description                              |
+|----------|------------------|------------------------------------------|
+| `chunks` | `List[Document]` | Text chunks from `text_splitter`         |
 
 **Returns:** `Chroma` — a LangChain-compatible vector store with similarity search support
 
 **Notes:**
+
 - ChromaDB is initialized in-memory (not persisted to disk).
 - Each call creates a new, empty vector store — there is no cross-call caching.
 
@@ -133,14 +139,15 @@ Full pipeline: loads the PDF, splits it, embeds it, and returns a retriever obje
 
 **Parameters:**
 
-| Name   | Type      | Description                          |
-|--------|-----------|--------------------------------------|
-| `file` | `gr.File` | Uploaded PDF file from Gradio         |
+| Name   | Type      | Description                         |
+|--------|-----------|-------------------------------------|
+| `file` | `gr.File` | Uploaded PDF file from Gradio       |
 
 **Returns:** `VectorStoreRetriever` — LangChain retriever for similarity-based document lookup
 
 **Pipeline:**
-```
+
+```text
 document_loader(file)
     → text_splitter(splits)         [splits into chunks]
     → vector_database(chunks)       [embeds and indexes]
@@ -159,13 +166,14 @@ Main entry point for the RAG QA pipeline. Called by Gradio on each user submissi
 
 | Name    | Type      | Description                          |
 |---------|-----------|--------------------------------------|
-| `file`  | `gr.File` | Uploaded PDF file from Gradio         |
-| `query` | `str`     | User's natural language question      |
+| `file`  | `gr.File` | Uploaded PDF file from Gradio        |
+| `query` | `str`     | User's natural language question     |
 
 **Returns:** `str` — the LLM-generated answer
 
 **Pipeline:**
-```
+
+```text
 get_llm()                           [initialize LLM]
 retriever(file)                     [build RAG retriever]
 RetrievalQA.from_chain_type(...)    [create QA chain]
@@ -181,15 +189,15 @@ return response['result']           [extract answer text]
 
 The Gradio interface is configured as follows:
 
-| Property        | Value                                                    |
-|-----------------|----------------------------------------------------------|
-| `fn`            | `retriever_qa`                                           |
-| `allow_flagging`| `"never"`                                                |
-| `title`         | `"RAG Chatbot"`                                          |
-| `description`   | Displayed below the title in the UI                      |
-| `inputs[0]`     | `gr.File` — PDF upload, single file, `.pdf` type only    |
-| `inputs[1]`     | `gr.Textbox` — 2-line query input with placeholder text  |
-| `outputs`       | `gr.Textbox` — displays the generated answer             |
+| Property          | Value                                                   |
+|-------------------|---------------------------------------------------------|
+| `fn`              | `retriever_qa`                                          |
+| `allow_flagging`  | `"never"`                                               |
+| `title`           | `"RAG Chatbot"`                                         |
+| `description`     | Displayed below the title in the UI                     |
+| `inputs[0]`       | `gr.File` — PDF upload, single file, `.pdf` type only   |
+| `inputs[1]`       | `gr.Textbox` — 2-line query input with placeholder text |
+| `outputs`         | `gr.Textbox` — displays the generated answer            |
 
 ### Launch Configuration
 
