@@ -38,6 +38,7 @@ After upload, the file name appears below the upload area confirming receipt.
 Click into the **"Input Query"** text box and type your question in natural language. You can use multi-line input (Shift+Enter for new line).
 
 **Examples of good questions:**
+
 - *"What is the main conclusion of this document?"*
 - *"Summarize the key findings in chapter 3."*
 - *"What methodology was used in the study?"*
@@ -68,13 +69,13 @@ The answer appears in the **"Output"** text box below the inputs. The answer is 
 
 ## Tips for Best Results
 
-| Tip | Details |
-|-----|---------|
-| **Ask specific questions** | Narrow, specific questions yield better answers than broad ones. |
-| **Reference document sections** | Mentioning a chapter, section, or topic helps the retriever focus. |
-| **Keep questions concise** | Shorter, clear queries produce more relevant retrievals. |
-| **Try rephrasing** | If the answer is poor, rephrase the question differently. |
-| **Check the PDF quality** | Scanned/image-only PDFs will not work — text must be selectable. |
+| Tip                              | Details                                                               |
+|----------------------------------|-----------------------------------------------------------------------|
+| **Ask specific questions**       | Narrow, specific questions yield better answers than broad ones.      |
+| **Reference document sections**  | Mentioning a chapter, section, or topic helps the retriever focus.    |
+| **Keep questions concise**       | Shorter, clear queries produce more relevant retrievals.              |
+| **Try rephrasing**               | If the answer is poor, rephrase the question differently.             |
+| **Check the PDF quality**        | Scanned/image-only PDFs will not work — text must be selectable.      |
 
 ---
 
