@@ -16,12 +16,12 @@ All configurable values in the RAG QA Chatbot are currently hardcoded in `qabot.
 
 ### Available WatsonX LLM Models (examples)
 
-| Model ID                              | Notes                             |
-|---------------------------------------|-----------------------------------|
-| `mistralai/mistral-medium-2505`       | Default — balanced capability     |
-| `mistralai/mistral-large`             | More capable, higher latency      |
-| `ibm/granite-13b-chat-v2`            | IBM Granite chat model            |
-| `meta-llama/llama-3-3-70b-instruct`  | Llama 3.3 70B instruction-tuned   |
+| Model ID                               | Notes                            |
+|----------------------------------------|----------------------------------|
+| `mistralai/mistral-medium-2505`        | Default — balanced capability    |
+| `mistralai/mistral-large`              | More capable, higher latency     |
+| `ibm/granite-13b-chat-v2`             | IBM Granite chat model           |
+| `meta-llama/llama-3-3-70b-instruct`   | Llama 3.3 70B instruction-tuned  |
 
 Check the [WatsonX AI Model Catalog](https://dataplatform.cloud.ibm.com/wx/samples/models) for the full list of available models.
 
@@ -39,10 +39,10 @@ Check the [WatsonX AI Model Catalog](https://dataplatform.cloud.ibm.com/wx/sampl
 
 ### Available WatsonX Embedding Models
 
-| Model ID                              | Dims | Notes                            |
-|---------------------------------------|------|----------------------------------|
-| `ibm/slate-125m-english-rtrvr-v2`     | 768  | Default — English retrieval      |
-| `ibm/slate-30m-english-rtrvr-v2`      | 384  | Smaller/faster variant           |
+| Model ID                             | Dims | Notes                           |
+|--------------------------------------|------|---------------------------------|
+| `ibm/slate-125m-english-rtrvr-v2`   | 768  | Default — English retrieval     |
+| `ibm/slate-30m-english-rtrvr-v2`    | 384  | Smaller/faster variant          |
 
 ---
 
@@ -55,6 +55,7 @@ Check the [WatsonX AI Model Catalog](https://dataplatform.cloud.ibm.com/wx/sampl
 | `length_function` | `len`   | Use `len` for character-based splitting (default and recommended).    |
 
 **Tuning guidance:**
+
 - For short, dense technical documents: `chunk_size=500`, `chunk_overlap=100`
 - For long narrative documents: `chunk_size=1500`, `chunk_overlap=150`
 - Overlap should be ~5–10% of chunk size.
@@ -104,12 +105,12 @@ retriever = vectordb.as_retriever(
 
 ### Chain Type Options
 
-| Chain Type    | Description                                                              |
-|---------------|--------------------------------------------------------------------------|
-| `"stuff"`     | All retrieved chunks stuffed into one prompt. Simple, works for short docs. |
-| `"map_reduce"`| Each chunk answered separately, then combined. Better for long docs.      |
-| `"refine"`    | Iteratively refines the answer chunk by chunk. Most thorough.             |
-| `"map_rerank"`| Scores and ranks chunk answers, returns the best one.                    |
+| Chain Type      | Description                                                             |
+|-----------------|-------------------------------------------------------------------------|
+| `"stuff"`       | All retrieved chunks stuffed into one prompt. Simple, works for short docs. |
+| `"map_reduce"` | Each chunk answered separately, then combined. Better for long docs.    |
+| `"refine"`      | Iteratively refines the answer chunk by chunk. Most thorough.           |
+| `"map_rerank"` | Scores and ranks chunk answers, returns the best one.                   |
 
 ---
 
@@ -129,10 +130,10 @@ In `rag_application.launch()`:
 
 If you are not in `us-south`, use the appropriate endpoint:
 
-| Region        | URL                                    |
-|---------------|----------------------------------------|
-| US South      | `https://us-south.ml.cloud.ibm.com`    |
-| EU (Frankfurt)| `https://eu-de.ml.cloud.ibm.com`       |
-| UK (London)   | `https://eu-gb.ml.cloud.ibm.com`       |
-| JP (Tokyo)    | `https://jp-tok.ml.cloud.ibm.com`      |
-| US East       | `https://us-east.ml.cloud.ibm.com`     |
+| Region          | URL                                    |
+|-----------------|----------------------------------------|
+| US South        | `https://us-south.ml.cloud.ibm.com`    |
+| EU (Frankfurt)  | `https://eu-de.ml.cloud.ibm.com`       |
+| UK (London)     | `https://eu-gb.ml.cloud.ibm.com`       |
+| JP (Tokyo)      | `https://jp-tok.ml.cloud.ibm.com`      |
+| US East         | `https://us-east.ml.cloud.ibm.com`     |

@@ -6,13 +6,13 @@ A Retrieval-Augmented Generation (RAG) powered question-answering chatbot that a
 
 ## Documentation
 
-| Document | Description |
-|----------|-------------|
-| [Architecture](docs/architecture.md) | System design, data flow diagram, and component breakdown |
-| [Setup & Installation](docs/setup.md) | Full installation and credential configuration guide |
-| [Usage Guide](docs/usage.md) | How to use the chatbot UI, tips, and limitations |
-| [API Reference](docs/api-reference.md) | All functions, parameters, and return types documented |
-| [Configuration Reference](docs/configuration.md) | Every tunable parameter and its options |
+| Document                                          | Description                                               |
+|---------------------------------------------------|-----------------------------------------------------------|
+| [Architecture](docs/architecture.md)              | System design, data flow diagram, and component breakdown |
+| [Setup & Installation](docs/setup.md)             | Full installation and credential configuration guide      |
+| [Usage Guide](docs/usage.md)                      | How to use the chatbot UI, tips, and limitations          |
+| [API Reference](docs/api-reference.md)            | All functions, parameters, and return types documented    |
+| [Configuration Reference](docs/configuration.md)  | Every tunable parameter and its options                   |
 
 ---
 
@@ -29,7 +29,7 @@ A Retrieval-Augmented Generation (RAG) powered question-answering chatbot that a
 
 ## Architecture
 
-```
+```text
 PDF Upload
     │
     ▼
@@ -130,7 +130,7 @@ User Query  ──────────────────────�
 
 ## Project Structure
 
-```
+```text
 RAG-QA-Chatbot/
 ├── qabot.py                    # Main application — RAG pipeline and Gradio UI
 ├── README.md                   # Project overview (this file)
